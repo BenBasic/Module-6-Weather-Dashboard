@@ -19,7 +19,9 @@ function searchWeather() {
     let currentTemperature = data.main.temp;
     let temperatureDisplay = $("<h2>").html(currentTemperature).attr({"class": "temp"});
     let currentHumidity = data.main.humidity;
-    let humidityDisplay = $("<h2>").html(currentHumidity).attr({"class": "humidity"});
+    let humidityDisplay = $("<h2>").html(currentHumidity + "%").attr({"class": "humidity"});
+    let currentWind = data.wind.speed;
+    let windDisplay = $("<h2>").html(currentWind).attr({"class": "wind"});
     let lat = data.coord.lat;
     let lon = data.coord.lon;
     let dt = data.dt;
@@ -28,7 +30,7 @@ function searchWeather() {
     
 
     function getUVIndex() {
-        let UVIndexURL = "https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=" + lat + "&lon=" + lon + "&dt=" + dt + "&appid=" + apiKey;
+        let UVIndexURL = "https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=" + lat + "&lon=" + lon + "&dt=" + dt + "&daily" + "&appid=" + apiKey;
         fetch(UVIndexURL, {
             method: 'GET',
         })
@@ -47,6 +49,18 @@ function searchWeather() {
         })
     }
 
+    function forecast() {
+        let forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&appid=" + apiKey;
+        fetch(forecastURL, {
+            method: 'GET',
+        })
+        .then( forecastResponse => { 
+            return forecastResponse.json();
+        }).then( forecastData => {
+            console.log(forecastData);
+        })
+    }
+
 
 
 
@@ -55,7 +69,9 @@ function searchWeather() {
     weatherSection.append($("<img>").attr("src", iconURL));
     weatherSection.append(temperatureDisplay);
     weatherSection.append(humidityDisplay);
+    weatherSection.append(windDisplay);
     getUVIndex();
+    forecast();
 });
 }
 
