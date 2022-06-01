@@ -50,7 +50,7 @@ function searchWeather() {
     }
 
     function forecast() {
-        let forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&appid=" + apiKey;
+        let forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&appid=" + apiKey + "&units=metric";
         fetch(forecastURL, {
             method: 'GET',
         })
@@ -58,6 +58,10 @@ function searchWeather() {
             return forecastResponse.json();
         }).then( forecastData => {
             console.log(forecastData);
+            // Currently seems like first 12pm reading is the 2nd in the index, and every 8th added index (2+8=10th place in index) it reads another of the same time for the following day
+            for (i = 2; i < 5; i+8) {
+
+            }
         })
     }
 
@@ -74,24 +78,5 @@ function searchWeather() {
     forecast();
 });
 }
-
-//   .then(function (response) {
-//     console.log(response);
-
-//     //Do something related to promise here I guess
-
-
-
-    
-//     return response.json();
-//   })
-//   .then(function (data) {
-//     console.log(data);
-//   })
-//   .catch(err => {
-//     console.log('Oh noooo!!');
-//     console.log(err);
-//   });
-// }
 
 searchWeather();
