@@ -14,14 +14,14 @@ function searchWeather() {
     console.log(data);
     let date = moment().format("MM/DD/YYYY");
     let icon = data.weather[0].icon;
-    let iconURL = "http://openweathermap.org/img/w/" + icon + ".png";
+    let iconURL = "http://openweathermap.org/img/wn/" + icon + ".png";
     let weatherTitle = $("<h2>").html(citySearch + date).attr({"class": "weather title"});
     let currentTemperature = data.main.temp;
-    let temperatureDisplay = $("<h2>").html(currentTemperature).attr({"class": "temp"});
+    let temperatureDisplay = $("<h2>").html(currentTemperature + " °C").attr({"class": "temp"});
     let currentHumidity = data.main.humidity;
     let humidityDisplay = $("<h2>").html(currentHumidity + "%").attr({"class": "humidity"});
     let currentWind = data.wind.speed;
-    let windDisplay = $("<h2>").html(currentWind).attr({"class": "wind"});
+    let windDisplay = $("<h2>").html(currentWind + " km/h").attr({"class": "wind"});
     let lat = data.coord.lat;
     let lon = data.coord.lon;
     let dt = data.dt;
@@ -59,7 +59,29 @@ function searchWeather() {
         }).then( forecastData => {
             console.log(forecastData);
             // Currently seems like first 12pm reading is the 2nd in the index, and every 8th added index (2+8=10th place in index) it reads another of the same time for the following day
-            for (i = 2; i < 5; i+8) {
+            for (i = 2; i < forecastData.list.length; i+=8) {
+                let forecastContainer = $('<section>').attr({"class": "card p-3"});
+                let forecastHeader = $('<h2>').attr({"class": "card-header"});
+                let forecastImageLink = "https://openweathermap.org/img/wn/" + forecastData.list[i].weather[0].icon + ".png";
+                let forecastImage = $('<img>').attr({"src": forecastImageLink});
+                let forecastTemperatureLink = forecastData.list[i].main.temp;
+                let forecastTemperature = $('<h2>');
+                let forecastWindLink = forecastData.list[i].wind.speed;
+                let forecastWind = $('<h2>');
+                let forecastHumidityLink = forecastData.list[i].main.humidity;
+                let forecastHumidity = $('<h2>');
+                let forecastDays = 1;
+
+                forecastHeader.text(moment().add(forecastDays, 'd').format('D/M/YYYY'))
+                forecastTemperature.text(forecastTemperatureLink + " °C");
+                forecastWind.text(forecastWindLink + " km/h");
+                forecastHumidity.text(forecastHumidityLink)
+
+                forecastContainer.append(forecastHeader);
+                forecastContainer.append(forecastImage);
+                forecastContainer.append(forecastTemperature);
+                forecastContainer.append(forecastWind);
+                forecastContainer.append(forecastDays);
 
             }
         })
