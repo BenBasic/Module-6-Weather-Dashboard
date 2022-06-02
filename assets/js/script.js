@@ -186,6 +186,8 @@ function pastSearches() {
         // Exits the for loop
         return;
     }
+    // Prevents function from making the program cease to function if it doesn't detect anything inside of the cities array
+    cities = [];
 }
 
 // Calls pastSearches function to load and display past city searches
