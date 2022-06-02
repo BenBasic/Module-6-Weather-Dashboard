@@ -1,7 +1,10 @@
 let cities = [];
 let weatherSection = $("#weather-stuff");
-let citySearch = "Dubai";
+let forecastSection = $("#forecast-stuff");
+let citySearch = "";
 let apiKey = "7eed36f27d06c72d7bd4346eee02a6cf";
+let searchEl = document.querySelector("#search-btn");
+let cityEl = document.querySelector("#search-city");
 
 function searchWeather() {
     let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&limit=5&appid=" + apiKey + "&units=metric";
@@ -15,7 +18,7 @@ function searchWeather() {
     let date = moment().format("MM/DD/YYYY");
     let icon = data.weather[0].icon;
     let iconURL = "http://openweathermap.org/img/wn/" + icon + ".png";
-    let weatherTitle = $("<h2>").html(citySearch + date).attr({"class": "weather title"});
+    let weatherTitle = $("<h2>").html(citySearch + " (" + date + ")").attr({"class": "card-header"});
     let currentTemperature = data.main.temp;
     let temperatureDisplay = $("<h2>").html(currentTemperature + " °C").attr({"class": "temp"});
     let currentHumidity = data.main.humidity;
@@ -43,8 +46,18 @@ function searchWeather() {
             let uvi = UVData.current.uvi;
             console.log(uvi);
 
-            let UVDisplay = $("<h3>").html(uvi)
+            let UVDisplay = $("<h3>").html(uvi).attr({"class": "uvi"});
             weatherSection.append(UVDisplay);
+
+            if (uvi <= 2) {
+                $(".uvi").attr({"class": "uvi good"});
+            };
+            if (uvi > 2 && uvi <= 5) {
+                $(".uvi").attr({"class": "uvi bad"});
+            };
+            if (uvi > 5) {
+                $(".uvi").attr({"class": "uvi terrible"});
+            };
 
         })
     }
@@ -58,9 +71,10 @@ function searchWeather() {
             return forecastResponse.json();
         }).then( forecastData => {
             console.log(forecastData);
-            // Currently seems like first 12pm reading is the 2nd in the index, and every 8th added index (2+8=10th place in index) it reads another of the same time for the following day
-            for (i = 2; i < forecastData.list.length; i+=8) {
-                let forecastContainer = $('<section>').attr({"class": "card p-3"});
+            let forecastDays = 1;
+            
+            for (i = 7; i < forecastData.list.length; i+=8) {
+                let forecastContainer = $('<section>').attr({"class": "card-p3"});
                 let forecastHeader = $('<h2>').attr({"class": "card-header"});
                 let forecastImageLink = "https://openweathermap.org/img/wn/" + forecastData.list[i].weather[0].icon + ".png";
                 let forecastImage = $('<img>').attr({"src": forecastImageLink});
@@ -70,18 +84,21 @@ function searchWeather() {
                 let forecastWind = $('<h2>');
                 let forecastHumidityLink = forecastData.list[i].main.humidity;
                 let forecastHumidity = $('<h2>');
-                let forecastDays = 1;
+                
 
                 forecastHeader.text(moment().add(forecastDays, 'd').format('D/M/YYYY'))
                 forecastTemperature.text(forecastTemperatureLink + " °C");
                 forecastWind.text(forecastWindLink + " km/h");
-                forecastHumidity.text(forecastHumidityLink)
+                forecastHumidity.text(forecastHumidityLink + "%")
 
+                forecastSection.append(forecastContainer)
                 forecastContainer.append(forecastHeader);
                 forecastContainer.append(forecastImage);
                 forecastContainer.append(forecastTemperature);
+                forecastContainer.append(forecastHumidity)
                 forecastContainer.append(forecastWind);
-                forecastContainer.append(forecastDays);
+
+                forecastDays++;
 
             }
         })
@@ -101,4 +118,7 @@ function searchWeather() {
 });
 }
 
-searchWeather();
+$("#search-btn").click(function() {
+    citySearch = $("#search-city").val().trim();
+    searchWeather();
+});
