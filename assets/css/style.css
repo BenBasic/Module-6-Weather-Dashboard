@@ -1,0 +1,16 @@
+.good {
+    background-color: green;
+}
+
+.bad {
+    background-color: yellow;
+}
+
+.terrible {
+    background-color: red;
+}
+
+.forecast-container {
+    background-color: royalblue;
+    margin: 15px;
+}
