@@ -1,16 +1,92 @@
+:root {
+    --border: 5px solid rgb(80, 69, 119);
+    --radius: 10px;
+    --white: white;
+    --bg-color: rgb(100, 90, 138);
+    --bg-color-light: rgb(153, 146, 184);
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: rgb(142, 126, 202);
+  }
+
+.jumbotron {
+    background-color: var(--bg-color-light);
+    color: var(--white);
+}
+
+.card {
+    background-color:transparent;
+    border-color: transparent;
+}
+
+#search-city {
+    background-color: var(--white);
+    border: var(--border);
+    border-radius: var(--radius);
+}
+
+#current-header {
+    text-align: center;
+    background-color: var(--bg-color);
+    color: var(--white);
+    border-radius: var(--radius);
+    border: var(--border);
+  }
+
+#forecast-header {
+    text-align: center;
+    background-color: var(--bg-color);
+    color: var(--white);
+    border-radius: var(--radius);
+    border: var(--border);
+}
+
+#weather-stuff {
+    text-align: center;
+    background-color: var(--bg-color);
+    color: var(--white);
+    border-radius: var(--radius);
+    border: var(--border);
+}
+
+#forecast-stuff {
+    text-align: center;
+    background-color: var(--bg-color-light);
+    color: var(--white);
+    border-radius: var(--radius);
+    border: var(--border);
+}
+
+button {
+    text-align: center;
+    background-color: var(--bg-color);
+    color: var(--white);
+    border-radius: var(--radius);
+    border: var(--border)
+}
+
 .good {
-    background-color: green;
+    background-color: rgb(90, 138, 106);
+    border-radius: var(--radius);
 }
 
 .bad {
-    background-color: yellow;
+    background-color: rgb(138, 112, 90);
+    border-radius: var(--radius);
 }
 
 .terrible {
-    background-color: red;
+    background-color: rgb(138, 90, 90);
+    border-radius: var(--radius);
 }
 
 .forecast-container {
-    background-color: royalblue;
+    text-align: center;
+    background-color: var(--bg-color);
+    color: var(--white);
+    border-radius: var(--radius);
+    border: var(--border);
     margin: 15px;
 }
